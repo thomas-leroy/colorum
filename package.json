@@ -1,0 +1,14 @@
+{
+  "name": "colorum",
+  "version": "1.0.0",
+  "description": "Colorum.",
+  "main": "index.html",
+  "scripts": {
+    "start": "lite-server"
+  },
+  "author": "Adrien / Thomas",
+  "license": "MIT",
+  "devDependencies": {
+    "lite-server": "^2.6.1"
+  }
+}
