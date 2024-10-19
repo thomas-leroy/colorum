@@ -1,3 +1,5 @@
+import { initGlobalListener } from './utils/events.js';
+
 export function initRouter() {
   window.addEventListener('hashchange', loadPage);
   loadPage();
@@ -23,4 +25,6 @@ function loadPage() {
     .catch((error) => {
       app.innerHTML = `<p>Page not found</p>`;
     });
+
+  initGlobalListener();
 }
