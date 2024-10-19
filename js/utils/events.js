@@ -8,6 +8,9 @@ export function initGlobalListener() {
   app.addEventListener('input', handleInputEvent);
 }
 
+/**
+ * This function call the guessContentType user input changes
+ */
 function handleInputEvent(event) {
   if (!event.target || event.target.id !== 'userInput') {
     return;
@@ -18,6 +21,9 @@ function handleInputEvent(event) {
   applyActiveStyle(inputType);
 }
 
+/**
+ * This function apply "active" class to guessed type on UI
+ */
 function applyActiveStyle(inputType) {
   const guessElement = document.getElementById('guess');
   if (!guessElement) {
@@ -28,12 +34,11 @@ function applyActiveStyle(inputType) {
 
   for (let i = 0; i < children.length; i++) {
     const child = children[i];
+    child.classList.remove('active');
 
     // Add or remove 'active' class based on whether the child's class matches the inputType
     if (child.classList.contains(inputType)) {
       child.classList.add('active');
-    } else {
-      child.classList.remove('active');
     }
   }
 }
