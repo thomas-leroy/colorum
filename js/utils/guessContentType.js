@@ -5,6 +5,10 @@ import { isHslColorList } from '../functions/isHslColorList.js';
 import { isValidFigmaUrl } from '../functions/isValidFigmaUrl.js';
 
 export function guessContentType(inputString) {
+  if (inputString.length === 0) {
+    return;
+  }
+
   if (isValidFigmaUrl(inputString)) {
     return 'figma';
   }
@@ -25,5 +29,5 @@ export function guessContentType(inputString) {
     return 'hslColors';
   }
 
-  return null;
+  return 'unknown';
 }
