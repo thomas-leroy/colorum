@@ -1,4 +1,7 @@
 import { guessContentType } from './guessContentType.js';
+import { applyActiveStyle } from '../functions/applyActiveStyle.js'
+import * as analyze from './analyze.js'
+import { debounce } from './debounce.js';
 
 export function initGlobalListener() {
   const app = document.getElementById('app');
@@ -28,12 +31,16 @@ function attachListeners(userInput) {
   userInput.addEventListener('paste', handlePasteEvent);
 }
 
+const runAnalyzeDebounced = debounce(analyze.runAnalyze, 300);
 function handleInputEvent(event) {
   if (!event.target || event.target.id !== 'userInput') {
     return;
   }
 
   const inputValue = event.target.value.trim();
+
+  runAnalyzeDebounced(inputValue);
+
   const inputType = guessContentType(inputValue);
   applyActiveStyle(inputType);
 }
@@ -59,24 +66,6 @@ function handlePasteEvent(event) {
         applyActiveStyle('image');
       }
       return;
-    }
-  }
-}
-
-function applyActiveStyle(inputType) {
-  const guessElement = document.getElementById('guess');
-  if (!guessElement) {
-    return;
-  }
-
-  const children = guessElement.children;
-
-  for (let i = 0; i < children.length; i++) {
-    const child = children[i];
-    child.classList.remove('active');
-
-    if (child.classList.contains(inputType)) {
-      child.classList.add('active');
     }
   }
 }
