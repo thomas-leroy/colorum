@@ -1,6 +1,6 @@
 import { guessContentType } from './guessContentType.js';
-import { applyActiveStyle } from '../functions/applyActiveStyle.js'
-import * as analyze from './analyze.js'
+import { applyActiveStyle } from '../functions/applyActiveStyle.js';
+import * as analyze from './analyze.js';
 import { debounce } from './debounce.js';
 
 export function initGlobalListener() {
@@ -38,11 +38,34 @@ function handleInputEvent(event) {
   }
 
   const inputValue = event.target.value.trim();
-
-  runAnalyzeDebounced(inputValue);
-
   const inputType = guessContentType(inputValue);
+
   applyActiveStyle(inputType);
+
+  runAnalyzeDebounced(inputValue, (result) => {
+    const resultDiv = document.getElementById('analysis');
+
+    resultDiv.innerHTML = '';
+
+    // Iterate over the color data
+    Object.entries(result).forEach(([color, normalizedHSL]) => {
+      // Create a new div element to represent the color
+      const colorSquare = document.createElement('div');
+
+      // Set the style of the div to display it as a color square
+      colorSquare.style.width = '50px';
+      colorSquare.style.height = '50px';
+      colorSquare.style.backgroundColor = normalizedHSL; // Use the HSL value for the background
+      colorSquare.style.margin = '5px';
+      colorSquare.style.display = 'inline-block'; // Display them inline
+
+      // Add a tooltip to show the original and normalized color
+      colorSquare.title = `Original: ${color}\nNormalized: ${normalizedHSL}`;
+
+      // Append the square to the #analysis div
+      resultDiv.appendChild(colorSquare);
+    });
+  });
 }
 
 function handlePasteEvent(event) {
@@ -72,7 +95,7 @@ function handlePasteEvent(event) {
 
 function handleImageFile(file) {
   const reader = new FileReader();
-  reader.onload = function(event) {
+  reader.onload = function (event) {
     const imgDataUrl = event.target.result;
     displayImagePreview(imgDataUrl);
   };
