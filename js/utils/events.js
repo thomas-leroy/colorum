@@ -2,6 +2,8 @@ import { guessContentType } from './guessContentType.js';
 import { applyActiveStyle } from '../functions/applyActiveStyle.js';
 import * as analyze from './analyze.js';
 import { debounce } from './debounce.js';
+import { displayImagePreview } from '../functions/displayImagePreview.js';
+import { extractDominantColors } from './imageColorAnalysis.js';
 
 export function initGlobalListener() {
   const app = document.getElementById('app');
@@ -94,25 +96,41 @@ function handlePasteEvent(event) {
 }
 
 function handleImageFile(file) {
+  const loader = document.getElementById('loading');
+  loader.classList.remove('hidden');
+
   const reader = new FileReader();
+
   reader.onload = function (event) {
     const imgDataUrl = event.target.result;
     displayImagePreview(imgDataUrl);
+
+    const img = document.querySelector('#imagePreview img');
+
+    img.onload = () => {
+      extractDominantColors(img, 15).then((dominantColors) => {
+        console.log('Dominant Colors:', dominantColors);
+
+        // Optionally, you can display the dominant colors in the DOM
+        const analysisDiv = document.getElementById('analysis');
+
+        // Clear the previous color squares
+        analysisDiv.innerHTML = ''; // This removes all the previous child elements (color squares)
+
+        dominantColors.forEach((color) => {
+          const colorSquare = document.createElement('div');
+          colorSquare.style.width = '50px';
+          colorSquare.style.height = '50px';
+          colorSquare.style.backgroundColor = color;
+          colorSquare.style.display = 'inline-block';
+          colorSquare.style.margin = '5px';
+          analysisDiv.appendChild(colorSquare);
+        });
+
+        loader.classList.add('hidden');
+      });
+    };
   };
 
-  reader.readAsDataURL(file);
-}
-
-function displayImagePreview(imageUrl) {
-  const previewContainer = document.getElementById('imagePreview');
-  if (!previewContainer) {
-    return;
-  }
-
-  const imgElement = document.createElement('img');
-  imgElement.src = imageUrl;
-  imgElement.style.maxWidth = '100%';
-
-  previewContainer.innerHTML = '';
-  previewContainer.appendChild(imgElement);
+  reader.readAsDataURL(file); // Start reading the file data
 }

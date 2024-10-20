@@ -16,3 +16,7 @@ h1 {
   font-weight: bold;
   font-size: 1.3em;
 }
+
+#loading.hidden {
+  display: none;
+}
