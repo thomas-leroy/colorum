@@ -1,5 +1,3 @@
-// imageColorAnalysis.js
-
 /**
  * Extracts the dominant colors from an image using the k-means clustering algorithm.
  *

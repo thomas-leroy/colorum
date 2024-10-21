@@ -1,6 +1,8 @@
 {
   "editor.formatOnSave": true,
-  "prettier.organizeImports": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"

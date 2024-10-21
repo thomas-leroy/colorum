@@ -1,8 +1,8 @@
-import { isValidCsv } from '../functions/isValidCsv.js';
 import { isHexColorList } from '../functions/isHexColorList.js';
-import { isValidJson } from '../functions/isValidJson.js';
 import { isHslColorList } from '../functions/isHslColorList.js';
+import { isValidCsv } from '../functions/isValidCsv.js';
 import { isValidFigmaUrl } from '../functions/isValidFigmaUrl.js';
+import { isValidJson } from '../functions/isValidJson.js';
 
 /**
  * Determines the content type of a given input string.

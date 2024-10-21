@@ -1,8 +1,8 @@
-import { guessContentType } from './guessContentType.js';
 import { applyActiveStyle } from '../functions/applyActiveStyle.js';
+import { displayImagePreview } from '../functions/displayImagePreview.js';
 import * as analyze from './analyze.js';
 import { debounce } from './debounce.js';
-import { displayImagePreview } from '../functions/displayImagePreview.js';
+import { guessContentType } from './guessContentType.js';
 import { extractDominantColors } from './imageColorAnalysis.js';
 
 /**
