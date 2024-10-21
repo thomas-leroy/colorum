@@ -1,9 +1,9 @@
 import { applyActiveStyle } from '../functions/applyActiveStyle.js';
 import { displayImagePreview } from '../functions/displayImagePreview.js';
-import * as analyze from './analyze.js';
-import { debounce } from './debounce.js';
-import { guessContentType } from './guessContentType.js';
-import { extractDominantColors } from './imageColorAnalysis.js';
+import * as analyze from '../utils/analyze.js';
+import { debounce } from '../utils/debounce.js';
+import { guessContentType } from '../utils/guessContentType.js';
+import { extractDominantColors } from '../utils/imageColorAnalysis.js';
 
 /**
  * Initializes the global listener for the application.
