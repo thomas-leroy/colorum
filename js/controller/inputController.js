@@ -67,7 +67,6 @@ function handleInputEvent(event) {
   applyActiveStyle(inputType);
 
   runAnalyzeDebounced(inputValue, (result) => {
-    // Select the image element from the preview
     const img = document.querySelector('#imagePreview');
     img.innerHTML = '';
 
@@ -128,7 +127,7 @@ function handlePastedImages(clipboardData) {
 }
 
 /**
- * Handles the processing of the image file and displays dominant colors.
+ * Handles the processing of the image file and extracts dominant colors.
  *
  * @param {File} file - The image file to process.
  */
@@ -158,8 +157,13 @@ function handleImageFile(file) {
         const analysisDiv = document.getElementById('analysis');
         analysisDiv.innerHTML = '';
 
-        // Display the dominant colors as squares
-        displayColorSquares(analysisDiv, dominantColors);
+        // Convert the dominant colors into a string format
+        const dominantColorsString = dominantColors.join(', ');
+
+        // Pass the string of colors to runAnalyze
+        runAnalyzeDebounced(dominantColorsString, (result) => {
+          displayColorSquares(analysisDiv, result);
+        });
 
         // Hide the loading indicator
         loader.classList.add('hidden');
