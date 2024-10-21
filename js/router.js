@@ -1,4 +1,4 @@
-import { initGlobalListener } from './utils/events.js';
+import { initGlobalListener } from './utils/inputController.js';
 
 export function initRouter() {
   window.addEventListener('hashchange', loadPage);

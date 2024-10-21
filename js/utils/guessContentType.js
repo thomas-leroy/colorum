@@ -4,6 +4,12 @@ import { isValidJson } from '../functions/isValidJson.js';
 import { isHslColorList } from '../functions/isHslColorList.js';
 import { isValidFigmaUrl } from '../functions/isValidFigmaUrl.js';
 
+/**
+ * Determines the content type of a given input string.
+ *
+ * @param {string} inputString - The input string to analyze.
+ * @returns {string} The determined content type (e.g., 'figma', 'json', 'csv', 'hexColors', 'hslColors', 'unknown').
+ */
 export function guessContentType(inputString) {
   if (inputString.length === 0) {
     return;
