@@ -1,4 +1,4 @@
-import { extractColorsFromString } from '../functions/extractColorsFromString.js';
+import { extractColorsFromString } from "../functions/extractColorsFromString.js";
 
 /**
  * Runs the color analysis on the provided input value and executes the callback with the result.
@@ -15,7 +15,7 @@ function runAnalyze(inputValue, callback) {
     return;
   }
 
-  console.log('inputValue', inputValue);
+  console.log("inputValue", inputValue);
 
   // Extract colors from the string and pass the result to the callback
   const colors = extractColorsFromString(inputValue);

@@ -5,12 +5,12 @@
  * @param {string} method - Sorting method: "hueCycle", "darkToLight", or "saturationEmphasis".
  * @returns {Object} - Sorted colors.
  */
-export function sortColors(colors, method = 'darkToLight') {
+export function sortColors(colors, method = "darkToLight") {
   const parseHSL = (hslString) => {
     const [hue, saturation, lightness] = hslString
       .match(/\d+%?/g)
-      .map((value, index) =>
-        value.endsWith('%') ? parseInt(value, 10) / 100 : parseInt(value, 10)
+      .map((value, _index) =>
+        value.endsWith("%") ? parseInt(value, 10) / 100 : parseInt(value, 10)
       );
     return { hue, saturation, lightness };
   };
@@ -20,17 +20,17 @@ export function sortColors(colors, method = 'darkToLight') {
     const { hue: hueB, saturation: satB, lightness: lightB } = parseHSL(hslB);
 
     switch (method) {
-      case 'hueCycle':
+      case "hueCycle":
         return hueA - hueB || satA - satB || lightA - lightB;
 
-      case 'darkToLight':
+      case "darkToLight":
         return lightA - lightB || hueA - hueB || satA - satB;
 
-      case 'saturationEmphasis':
+      case "saturationEmphasis":
         return satB - satA || hueA - hueB || lightA - lightB;
 
       default:
-        throw new Error('Invalid sorting method specified.');
+        throw new Error("Invalid sorting method specified.");
     }
   });
 
