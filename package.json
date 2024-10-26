@@ -4,7 +4,8 @@
   "description": "Colorum.",
   "main": "index.html",
   "scripts": {
-    "start": "lite-server"
+    "start": "lite-server",
+    "dev": "vite"
   },
   "author": "Adrien / Thomas",
   "license": "MIT",
@@ -16,6 +17,11 @@
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-unused-imports": "^4.1.4",
     "lite-server": "^2.6.1",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "vite": "^5.4.10"
+  },
+  "dependencies": {
+    "color-name-list": "^10.28.0",
+    "nearest-color": "^0.4.4"
   }
 }

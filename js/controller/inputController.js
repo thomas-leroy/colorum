@@ -1,6 +1,5 @@
 import { applyActiveStyle } from "../functions/applyActiveStyle.js";
 import { displayImagePreview } from "../functions/displayImagePreview.js";
-import { sortColors } from "../functions/sortColors.js";
 import * as analyze from "../utils/analyze.js";
 import { debounce } from "../utils/debounce.js";
 import { guessContentType } from "../utils/guessContentType.js";
@@ -177,40 +176,54 @@ function handleImageFile(file) {
 }
 
 /**
- * Displays color squares in the specified container.
+ * Displays color rectangles in the specified container.
  *
- * @param {HTMLElement} container - The container element to append color squares to.
- * @param {Object} colors - The object containing color mappings or an array of colors.
+ * @param {HTMLElement} container - The container element to append color rectangles to.
+ * @param {Array} colors - An array of enriched color objects, each containing hex, hsl, and name.
  */
 function displayColorSquares(container, colors) {
-  const sortedColors = sortColors(colors);
+  // Clear existing color rectangles if any
+  container.innerHTML = "";
 
-  console.log(container, colors, sortedColors);
-
-  Object.entries(sortedColors).forEach(([color, normalizedHSL]) => {
-    const colorSquare = createColorSquare(normalizedHSL, color);
-    container.appendChild(colorSquare);
+  // Iterate over each enriched color and create a rectangle for each
+  colors.forEach((color) => {
+    const colorRectangle = createColorSquare(color.hex, color.name, color.hsl);
+    container.appendChild(colorRectangle);
   });
 }
 
 /**
- * Creates a color square element.
+ * Creates a color rectangle element with a label below it.
  *
- * @param {string} color - The color to display in the square.
- * @param {string} [title] - Optional title for the square (for tooltips).
- * @returns {HTMLElement} The created color square element.
+ * @param {string} hex - The hex color code to display in the rectangle.
+ * @param {string} name - The name of the color for the label.
+ * @param {string} hsl - The HSL value of the color for tooltip.
+ * @returns {HTMLElement} The created color rectangle element with label.
  */
-function createColorSquare(color, title = "") {
-  const colorSquare = document.createElement("div");
-  colorSquare.style.width = "50px";
-  colorSquare.style.height = "50px";
-  colorSquare.style.backgroundColor = color;
-  colorSquare.style.margin = "5px";
-  colorSquare.style.display = "inline-block";
+function createColorSquare(hex, name, hsl) {
+  // Main container for the color rectangle and label
+  const colorContainer = document.createElement("div");
+  colorContainer.style.display = "inline-block";
+  colorContainer.style.textAlign = "center";
+  colorContainer.style.margin = "5px";
 
-  if (title) {
-    colorSquare.title = `Original: ${title}\nNormalized: ${color}`;
-  }
+  // Color rectangle
+  const colorRectangle = document.createElement("div");
+  colorRectangle.style.width = "80px"; // Adjust width for rectangle
+  colorRectangle.style.height = "40px"; // Adjust height for rectangle
+  colorRectangle.style.backgroundColor = hex;
+  colorRectangle.style.borderRadius = "4px";
+  colorRectangle.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";
+  colorRectangle.title = `Name: ${name}\nHex: ${hex}\nHSL: ${hsl}`;
 
-  return colorSquare;
+  // Label for the color name
+  const colorLabel = document.createElement("div");
+  colorLabel.innerText = name;
+  colorLabel.style.fontSize = "12px"; // Basic text style
+
+  // Append color rectangle and label to container
+  colorContainer.appendChild(colorRectangle);
+  colorContainer.appendChild(colorLabel);
+
+  return colorContainer;
 }

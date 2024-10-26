@@ -24,7 +24,7 @@ To run this project, you need to have Node.js and npm installed on your machine.
 
 Once the dependencies are installed, you can start the project by running the following command:
 
-`npm start`
+`npm run dev`
 
 This will start a local development server using `lite-server`. The project should automatically open in your browser. If it doesn't, go to `http://localhost:3000/` manually.
 
