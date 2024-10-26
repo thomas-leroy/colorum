@@ -1,6 +1,6 @@
 import { applyActiveStyle } from '../functions/applyActiveStyle.js';
 import { displayImagePreview } from '../functions/displayImagePreview.js';
-import { sortColorsByHSL } from '../functions/sortColorsByHSL.js';
+import { sortColors } from '../functions/sortColors.js';
 import * as analyze from '../utils/analyze.js';
 import { debounce } from '../utils/debounce.js';
 import { guessContentType } from '../utils/guessContentType.js';
@@ -183,7 +183,9 @@ function handleImageFile(file) {
  * @param {Object} colors - The object containing color mappings or an array of colors.
  */
 function displayColorSquares(container, colors) {
-  const sortedColors = sortColorsByHSL(colors);
+  const sortedColors = sortColors(colors);
+
+  console.log(container, colors, sortedColors);
 
   Object.entries(sortedColors).forEach(([color, normalizedHSL]) => {
     const colorSquare = createColorSquare(normalizedHSL, color);
