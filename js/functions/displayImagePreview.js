@@ -5,7 +5,7 @@
  * @param {string} [containerId='imagePreview'] - The ID of the container where the image will be displayed. Defaults to 'imagePreview'.
  * @returns {void} - Returns nothing.
  */
-export function displayImagePreview(imageUrl, containerId = 'imagePreview') {
+export function displayImagePreview(imageUrl, containerId = "imagePreview") {
   // Get the container element where the image will be displayed
   const previewContainer = document.getElementById(containerId);
 
@@ -15,11 +15,11 @@ export function displayImagePreview(imageUrl, containerId = 'imagePreview') {
   }
 
   // Create a new image element and set its source
-  const imgElement = document.createElement('img');
+  const imgElement = document.createElement("img");
   imgElement.src = imageUrl;
-  imgElement.style.maxWidth = '100%'; // Ensure the image fits within the container
+  imgElement.style.maxWidth = "100%"; // Ensure the image fits within the container
 
   // Clear any previous content and append the new image
-  previewContainer.innerHTML = '';
+  previewContainer.innerHTML = "";
   previewContainer.appendChild(imgElement);
 }

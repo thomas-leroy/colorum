@@ -1,4 +1,4 @@
-import { convertHexToHSL } from '../functions/convertHexToHSL.js';
+import { convertHexToHSL } from "../functions/convertHexToHSL.js";
 
 /**
  * Extracts all hex and HSL colors from a given string, and converts hex colors to their normalized HSL equivalent.

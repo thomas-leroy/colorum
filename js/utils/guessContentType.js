@@ -1,8 +1,8 @@
-import { isHexColorList } from '../functions/isHexColorList.js';
-import { isHslColorList } from '../functions/isHslColorList.js';
-import { isValidCsv } from '../functions/isValidCsv.js';
-import { isValidFigmaUrl } from '../functions/isValidFigmaUrl.js';
-import { isValidJson } from '../functions/isValidJson.js';
+import { isHexColorList } from "../functions/isHexColorList.js";
+import { isHslColorList } from "../functions/isHslColorList.js";
+import { isValidCsv } from "../functions/isValidCsv.js";
+import { isValidFigmaUrl } from "../functions/isValidFigmaUrl.js";
+import { isValidJson } from "../functions/isValidJson.js";
 
 /**
  * Determines the content type of a given input string.
@@ -16,24 +16,24 @@ export function guessContentType(inputString) {
   }
 
   if (isValidFigmaUrl(inputString)) {
-    return 'figma';
+    return "figma";
   }
 
   if (isValidJson(inputString)) {
-    return 'json';
+    return "json";
   }
 
   if (isValidCsv(inputString)) {
-    return 'csv';
+    return "csv";
   }
 
   if (isHexColorList(inputString)) {
-    return 'hexColors';
+    return "hexColors";
   }
 
   if (isHslColorList(inputString)) {
-    return 'hslColors';
+    return "hslColors";
   }
 
-  return 'unknown';
+  return "unknown";
 }

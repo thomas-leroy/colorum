@@ -1,16 +1,16 @@
-import { initGlobalListener } from './controller/inputController.js';
+import { initGlobalListener } from "./controller/inputController.js";
 
 export function initRouter() {
-  window.addEventListener('hashchange', loadPage);
+  window.addEventListener("hashchange", loadPage);
   loadPage();
 }
 
 function loadPage() {
-  const COMPONENTS_DIRECTORY = 'views';
-  const DEFAULT_PAGE = 'home';
+  const COMPONENTS_DIRECTORY = "views";
+  const DEFAULT_PAGE = "home";
 
   const page = window.location.hash.substring(1) || DEFAULT_PAGE;
-  const app = document.getElementById('app');
+  const app = document.getElementById("app");
 
   fetch(`/${COMPONENTS_DIRECTORY}/${page}.html`)
     .then((response) => {

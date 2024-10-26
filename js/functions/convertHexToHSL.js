@@ -6,14 +6,14 @@
  */
 export function convertHexToHSL(hex) {
   // Remove the '#' if present
-  hex = hex.replace(/^#/, '');
+  hex = hex.replace(/^#/, "");
 
   // Convert short hex format (#RGB) to long format (#RRGGBB)
   if (hex.length === 3) {
     hex = hex
-      .split('')
+      .split("")
       .map((h) => h + h)
-      .join('');
+      .join("");
   }
 
   // Parse the R, G, B values from the hex string and normalize them (0-1 range)

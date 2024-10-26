@@ -5,7 +5,7 @@
  * @param {string} [guessDivId='guess'] - The ID of the parent element containing the children to modify. Default is 'guess'.
  * @returns {void} - Returns nothing.
  */
-export function applyActiveStyle(inputType, guessDivId = 'guess') {
+export function applyActiveStyle(inputType, guessDivId = "guess") {
   // Get the parent element
   const guessElement = document.getElementById(guessDivId);
 
@@ -19,10 +19,10 @@ export function applyActiveStyle(inputType, guessDivId = 'guess') {
 
   // Loop through each child, remove 'active' class, and add it if the child has the inputType class
   children.forEach((child) => {
-    child.classList.remove('active');
+    child.classList.remove("active");
 
     if (child.classList.contains(inputType)) {
-      child.classList.add('active');
+      child.classList.add("active");
     }
   });
 }

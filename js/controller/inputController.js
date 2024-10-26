@@ -1,21 +1,21 @@
-import { applyActiveStyle } from '../functions/applyActiveStyle.js';
-import { displayImagePreview } from '../functions/displayImagePreview.js';
-import { sortColors } from '../functions/sortColors.js';
-import * as analyze from '../utils/analyze.js';
-import { debounce } from '../utils/debounce.js';
-import { guessContentType } from '../utils/guessContentType.js';
-import { extractDominantColors } from '../utils/imageColorAnalysis.js';
+import { applyActiveStyle } from "../functions/applyActiveStyle.js";
+import { displayImagePreview } from "../functions/displayImagePreview.js";
+import { sortColors } from "../functions/sortColors.js";
+import * as analyze from "../utils/analyze.js";
+import { debounce } from "../utils/debounce.js";
+import { guessContentType } from "../utils/guessContentType.js";
+import { extractDominantColors } from "../utils/imageColorAnalysis.js";
 
 /**
  * Initializes the global listener for the application.
  */
 export function initGlobalListener() {
-  const app = document.getElementById('app');
+  const app = document.getElementById("app");
   if (!app) {
     return;
   }
 
-  let userInput = document.getElementById('userInput');
+  let userInput = document.getElementById("userInput");
   if (userInput) {
     attachListeners(userInput);
   } else {
@@ -30,7 +30,7 @@ export function initGlobalListener() {
  */
 function observeInputElement(app) {
   const observer = new MutationObserver(() => {
-    const userInput = document.getElementById('userInput');
+    const userInput = document.getElementById("userInput");
     if (userInput) {
       attachListeners(userInput);
       observer.disconnect();
@@ -46,8 +46,8 @@ function observeInputElement(app) {
  * @param {HTMLElement} userInput - The user input element.
  */
 function attachListeners(userInput) {
-  userInput.addEventListener('input', handleInputEvent);
-  userInput.addEventListener('paste', handlePasteEvent);
+  userInput.addEventListener("input", handleInputEvent);
+  userInput.addEventListener("paste", handlePasteEvent);
 }
 
 const runAnalyzeDebounced = debounce(analyze.runAnalyze, 300);
@@ -58,7 +58,7 @@ const runAnalyzeDebounced = debounce(analyze.runAnalyze, 300);
  * @param {Event} event - The input event.
  */
 function handleInputEvent(event) {
-  if (!event.target || event.target.id !== 'userInput') {
+  if (!event.target || event.target.id !== "userInput") {
     return;
   }
 
@@ -68,11 +68,11 @@ function handleInputEvent(event) {
   applyActiveStyle(inputType);
 
   runAnalyzeDebounced(inputValue, (result) => {
-    const img = document.querySelector('#imagePreview');
-    img.innerHTML = '';
+    const img = document.querySelector("#imagePreview");
+    img.innerHTML = "";
 
-    const resultDiv = document.getElementById('analysis');
-    resultDiv.innerHTML = '';
+    const resultDiv = document.getElementById("analysis");
+    resultDiv.innerHTML = "";
     displayColorSquares(resultDiv, result);
   });
 }
@@ -88,7 +88,7 @@ function handlePasteEvent(event) {
     return;
   }
 
-  const textData = clipboardData.getData('Text');
+  const textData = clipboardData.getData("Text");
   if (textData) {
     return;
   }
@@ -111,7 +111,7 @@ function handlePastedImages(clipboardData) {
   for (let i = 0; i < items.length; i++) {
     const item = items[i];
 
-    if (item.type.indexOf('image') === -1) {
+    if (item.type.indexOf("image") === -1) {
       continue;
     }
 
@@ -122,7 +122,7 @@ function handlePastedImages(clipboardData) {
     }
 
     handleImageFile(file);
-    applyActiveStyle('image');
+    applyActiveStyle("image");
     return;
   }
 }
@@ -134,8 +134,8 @@ function handlePastedImages(clipboardData) {
  */
 function handleImageFile(file) {
   // Show loading indicator
-  const loader = document.getElementById('loading');
-  loader.classList.remove('hidden');
+  const loader = document.getElementById("loading");
+  loader.classList.remove("hidden");
 
   // Create a FileReader to read the image file
   const reader = new FileReader();
@@ -148,18 +148,18 @@ function handleImageFile(file) {
     displayImagePreview(imgDataUrl);
 
     // Select the image element from the preview
-    const img = document.querySelector('#imagePreview img');
+    const img = document.querySelector("#imagePreview img");
 
     // Define what happens once the image is fully loaded
     img.onload = () => {
       // Extract dominant colors from the image
       extractDominantColors(img, 15).then((dominantColors) => {
         // Get the analysis div and clear previous content
-        const analysisDiv = document.getElementById('analysis');
-        analysisDiv.innerHTML = '';
+        const analysisDiv = document.getElementById("analysis");
+        analysisDiv.innerHTML = "";
 
         // Convert the dominant colors into a string format
-        const dominantColorsString = dominantColors.join(', ');
+        const dominantColorsString = dominantColors.join(", ");
 
         // Pass the string of colors to runAnalyze
         runAnalyzeDebounced(dominantColorsString, (result) => {
@@ -167,7 +167,7 @@ function handleImageFile(file) {
         });
 
         // Hide the loading indicator
-        loader.classList.add('hidden');
+        loader.classList.add("hidden");
       });
     };
   };
@@ -200,13 +200,13 @@ function displayColorSquares(container, colors) {
  * @param {string} [title] - Optional title for the square (for tooltips).
  * @returns {HTMLElement} The created color square element.
  */
-function createColorSquare(color, title = '') {
-  const colorSquare = document.createElement('div');
-  colorSquare.style.width = '50px';
-  colorSquare.style.height = '50px';
+function createColorSquare(color, title = "") {
+  const colorSquare = document.createElement("div");
+  colorSquare.style.width = "50px";
+  colorSquare.style.height = "50px";
   colorSquare.style.backgroundColor = color;
-  colorSquare.style.margin = '5px';
-  colorSquare.style.display = 'inline-block';
+  colorSquare.style.margin = "5px";
+  colorSquare.style.display = "inline-block";
 
   if (title) {
     colorSquare.title = `Original: ${title}\nNormalized: ${color}`;

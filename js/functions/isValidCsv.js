@@ -5,7 +5,7 @@
  * @returns {boolean} Returns `true` if the input string is a valid CSV, otherwise `false`.
  */
 export function isValidCsv(inputString) {
-  const lines = inputString.trim().split('\n');
-  const isCsv = lines.every((line) => line.split(',').length > 1);
+  const lines = inputString.trim().split("\n");
+  const isCsv = lines.every((line) => line.split(",").length > 1);
   return isCsv && lines.length > 1;
 }

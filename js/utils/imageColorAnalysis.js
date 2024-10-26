@@ -6,8 +6,8 @@
  * @returns {Promise<string[]>} A promise that resolves to an array of colors in hex format.
  */
 export async function extractDominantColors(img, numColors = 15) {
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
 
   canvas.width = img.width;
   canvas.height = img.height;
