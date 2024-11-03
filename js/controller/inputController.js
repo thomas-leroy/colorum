@@ -1,9 +1,8 @@
 import { applyActiveStyle } from "../functions/applyActiveStyle.js";
-import { displayImagePreview } from "../functions/displayImagePreview.js";
+import { startLoadingMessages } from "../functions/startLoadingMessage.js";
 import * as analyze from "../utils/analyze.js";
 import { debounce } from "../utils/debounce.js";
 import { guessContentType } from "../utils/guessContentType.js";
-import { extractDominantColors } from "../utils/imageColorAnalysis.js";
 
 /**
  * Initializes the global listener for the application.
@@ -126,54 +125,81 @@ function handlePastedImages(clipboardData) {
   }
 }
 
+import { stopLoadingMessages } from "../functions/stopLoadingMessages.js";
+
+const colorAnalyzerWorker = new Worker(
+  new URL("../workers/colorAnalyzerWorker.js", import.meta.url)
+);
+
 /**
- * Handles the processing of the image file and extracts dominant colors.
+ * Handles the processing of the image file and extracts pixel data before
+ * sending it to the Web Worker for color clustering.
  *
  * @param {File} file - The image file to process.
  */
 function handleImageFile(file) {
-  // Show loading indicator
-  const loader = document.getElementById("loading");
-  loader.classList.remove("hidden");
+  startLoadingMessages();
 
-  // Create a FileReader to read the image file
   const reader = new FileReader();
-
-  // Define the load event for when the file has been read
   reader.onload = function (event) {
     const imgDataUrl = event.target.result;
 
-    // Display the image preview in the DOM
-    displayImagePreview(imgDataUrl);
+    const img = new Image();
+    img.src = imgDataUrl;
 
-    // Select the image element from the preview
-    const img = document.querySelector("#imagePreview img");
-
-    // Define what happens once the image is fully loaded
     img.onload = () => {
-      // Extract dominant colors from the image
-      extractDominantColors(img, 15).then((dominantColors) => {
-        // Get the analysis div and clear previous content
-        const analysisDiv = document.getElementById("analysis");
-        analysisDiv.innerHTML = "";
+      // Create an off-screen canvas to extract pixel data
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
 
-        // Convert the dominant colors into a string format
-        const dominantColorsString = dominantColors.join(", ");
+      // Extract pixel data
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const pixels = Array.from(imageData.data); // Convert to a regular array
 
-        // Pass the string of colors to runAnalyze
-        runAnalyzeDebounced(dominantColorsString, (result) => {
-          displayColorSquares(analysisDiv, result);
-        });
-
-        // Hide the loading indicator
-        loader.classList.add("hidden");
+      // Send pixels data and desired color count to the Worker
+      colorAnalyzerWorker.postMessage({
+        pixels,
+        numColors: 15,
       });
+    };
+
+    img.onerror = () => {
+      console.error("Failed to load image.");
+      stopLoadingMessages();
     };
   };
 
-  // Start reading the image file as a data URL
   reader.readAsDataURL(file);
 }
+
+/**
+ * Receives messages from the Web Worker containing dominant colors.
+ *
+ * @param {MessageEvent} event - The message event from the Web Worker.
+ * @property {Array<string>} event.data - Array of dominant color values in hex.
+ */
+colorAnalyzerWorker.onmessage = function (event) {
+  const dominantColors = event.data;
+
+  if (dominantColors.length === 0) {
+    console.warn("No dominant colors found or error in extraction.");
+    stopLoadingMessages();
+    return;
+  }
+
+  const analysisDiv = document.getElementById("analysis");
+  analysisDiv.innerHTML = "";
+
+  const dominantColorsString = dominantColors.join(", ");
+  runAnalyzeDebounced(dominantColorsString, (result) => {
+    displayColorSquares(analysisDiv, result);
+  });
+
+  stopLoadingMessages();
+};
 
 /**
  * Displays color rectangles in the specified container.
